@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from .yasg import urlpatterns as doc_urls
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -22,3 +24,5 @@ urlpatterns = [
     path('api/patient/', include('patient.api.urls')),
     path('api/admin/', include('hospitalAdmin.api.urls')),
 ]
+
+urlpatterns += doc_urls

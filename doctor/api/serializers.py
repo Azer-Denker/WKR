@@ -5,45 +5,36 @@ from doctor.models import doctor
 from django.contrib.auth.models import Group
 
 
-
-
-
 class doctorRegistrationSerializer(serializers.Serializer):
 
-    username=serializers.CharField(label='Username:')
-    first_name=serializers.CharField(label='First name:')
-    last_name=serializers.CharField(label='Last name:', required=False)
-    password = serializers.CharField(label='Password:',style={'input_type': 'password'}, write_only=True,min_length=8,
+    username = serializers.CharField(label='Username:')
+    first_name = serializers.CharField(label='First name:')
+    last_name = serializers.CharField(label='Last name:', required=False)
+    password = serializers.CharField(label='Password:', style={'input_type': 'password'}, write_only=True, min_length=8,
     help_text="Your password must contain at least 8 characters and should not be entirely numeric."
     )
-    password2=serializers.CharField(label='Confirm password:',style={'input_type': 'password'},  write_only=True)
-    
+    password2 = serializers.CharField(label='Confirm password:', style={'input_type': 'password'},  write_only=True)
 
-    
     def validate_username(self, username):
-        username_exists=User.objects.filter(username__iexact=username)
+        username_exists = User.objects.filter(username__iexact=username)
         if username_exists:
-            raise serializers.ValidationError({'username':'This username already exists'})
+            raise serializers.ValidationError({'username': 'This username already exists'})
         return username
-
         
     def validate_password(self, password):
         if password.isdigit():
             raise serializers.ValidationError('Your password should contain letters!')
-        return password  
-
- 
+        return password
 
     def validate(self, data):
-        password=data.get('password')
-        password2=data.pop('password2')
+        password = data.get('password')
+        password2 = data.pop('password2')
         if password != password2:
-            raise serializers.ValidationError({'password':'password must match'})
+            raise serializers.ValidationError({'password': 'password must match'})
         return data
 
-
     def create(self, validated_data):
-        user= User.objects.create(
+        user = User.objects.create(
                 username=validated_data['username'],
                 first_name=validated_data['first_name'],
                 last_name=validated_data['last_name'],
@@ -55,19 +46,22 @@ class doctorRegistrationSerializer(serializers.Serializer):
         group_doctor.user_set.add(user)
         return user
 
+
 class doctorProfileSerializer(serializers.Serializer):
-    Cardiologist='CL'
-    Dermatologists='DL'
-    Emergency_Medicine_Specialists='EMC'
-    Immunologists='IL'
-    Anesthesiologists='AL'
-    Colon_and_Rectal_Surgeons='CRS'
-    department=serializers.ChoiceField(label='Department:', choices=[(Cardiologist,'Cardiologist'),
-        (Dermatologists,'Dermatologists'),
-        (Emergency_Medicine_Specialists,'Emergency Medicine Specialists'),
-        (Immunologists,'Immunologists'),
-        (Anesthesiologists,'Anesthesiologists'),
-        (Colon_and_Rectal_Surgeons,'Colon and Rectal Surgeons')
+    Cardiologist = 'CL'
+    Dermatologists = 'DL'
+    Emergency_Medicine_Specialists = 'EMC'
+    Immunologists = 'IL'
+    Anesthesiologists = 'AL'
+    Colon_and_Rectal_Surgeons = 'CRS'
+    department = serializers.ChoiceField(label='Department:',
+                                         choices=[(Cardiologist, 'Cardiologist'),
+                                                  (Dermatologists, 'Dermatologists'),
+                                                  (Emergency_Medicine_Specialists, 'Emergency Medicine Specialists'),
+                                                           (Immunologists, 'Immunologists'),
+                                                                       (Anesthesiologists, 'Anesthesiologists'),
+                                                                       (Colon_and_Rectal_Surgeons,
+                                                                        'Colon and Rectal Surgeons')
     ])
     address= serializers.CharField(label="Address:")
     mobile=serializers.CharField(label="Mobile Number:", max_length=20)
@@ -118,7 +112,7 @@ class doctorAppointmentSerializer(serializers.Serializer):
     appointment_date=serializers.DateField(label="Appointment Date:",)
     appointment_time=serializers.TimeField(label="Appointment Time:")
     patient_history=patientHistorySerializerDoctorView(label='patient History:')
-    
+
 
     def related_patient_name(self, obj):
         return obj.patient_history.patient.get_name

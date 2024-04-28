@@ -7,16 +7,15 @@ from django.contrib.auth.models import Group
 from doctor.models import doctor
 
 
-
 class patientRegistrationSerializer(serializers.Serializer):
 
-    username=serializers.CharField(label='Username:')
-    first_name=serializers.CharField(label='First name:')
-    last_name=serializers.CharField(label='Last name:', required=False)
-    password = serializers.CharField(label='Password:',style={'input_type': 'password'}, write_only=True,min_length=8,
-    help_text="Your password must contain at least 8 characters and should not be entirely numeric."
-    )
-    password2=serializers.CharField(label='Confirm password:',style={'input_type': 'password'},  write_only=True)
+    username = serializers.CharField(label='Username:')
+    first_name = serializers.CharField(label='First name:')
+    last_name = serializers.CharField(label='Last name:', required=False)
+    password = serializers.CharField(label='Password:', style={'input_type': 'password'}, write_only=True, min_length=8,
+                                     help_text="Your password must contain at least 8 characters and should not be "
+                                               "entirely numeric.")
+    password2 = serializers.CharField(label='Confirm password:', style={'input_type': 'password'},  write_only=True)
     
 
     

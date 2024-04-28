@@ -42,17 +42,13 @@ INSTALLED_APPS = [
     'doctor.apps.DoctorConfig',
     'patient.apps.PatientConfig',
     'hospitalAdmin.apps.HospitaladminConfig',
-
-
-    #rest_framework
+    'drf_yasg',
     'rest_framework',
     'rest_framework.authtoken',
-
-
-    
+    # "rest_framework_swagger",
 ]
 
-REST_FRAMEWORK={
+REST_FRAMEWORK = {
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
@@ -76,7 +72,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'main.urls'
-AUTH_USER_MODEL='account.User'
+AUTH_USER_MODEL = 'account.User'
 
 TEMPLATES = [
     {
@@ -132,7 +128,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Bishkek'
 
 USE_I18N = True
 
