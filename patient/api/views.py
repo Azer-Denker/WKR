@@ -16,14 +16,13 @@ from rest_framework.permissions import BasePermission
 from patient.models import patient, Appointment
 
 
-
-
 class IsPatient(BasePermission):
     """custom Permission class for Patient"""
 
     def has_permission(self, request, view):
         return bool(request.user and request.user.groups.filter(name='patient').exists())
-        
+
+
 class CustomAuthToken(ObtainAuthToken):
 
     """This class returns custom Authentication token only for patient"""
@@ -41,7 +40,7 @@ class CustomAuthToken(ObtainAuthToken):
                 },
                 status=status.HTTP_403_FORBIDDEN
             )
-        elif account_approval==False:
+        elif account_approval == False:
             return Response(
                 {
                     'message': "You are not authorised to login as a patient"
@@ -81,16 +80,14 @@ class registrationView(APIView):
             }, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 class patientProfileView(APIView):
     """"API endpoint for Patient profile view/update-- Only accessble by patients"""
     permission_classes = [IsPatient]
 
-
     def get(self, request, format=None):
         user = request.user
         profile = patient.objects.filter(user=user).get()
-        userSerializer=patientRegistrationSerializer(user)
+        userSerializer = patientRegistrationSerializer(user)
         profileSerializer = patientProfileSerializer(profile)
         return Response({
             'user_data':userSerializer.data,
@@ -106,13 +103,12 @@ class patientProfileView(APIView):
         if profileSerializer.is_valid():
             profileSerializer.save()
             return Response({
-                'profile_data':profileSerializer.data
+                'profile_data': profileSerializer.data
             }, status=status.HTTP_200_OK)
         return Response({
-                'profile_data':profileSerializer.errors
+                'profile_data': profileSerializer.errors
             }, status=status.HTTP_400_BAD_REQUEST)
 
-            
 
 class patientHistoryView(APIView):
 
@@ -123,21 +119,20 @@ class patientHistoryView(APIView):
         user = request.user
         user_patient = patient.objects.filter(user=user).get()
         history = patient_history.objects.filter(patient=user_patient)
-        historySerializer=patientHistorySerializer(history, many=True)
+        historySerializer = patientHistorySerializer(history, many=True)
         return Response(historySerializer.data, status=status.HTTP_200_OK)
 
 
 class appointmentViewPatient(APIView):
     """"API endpoint for getting appointments details, creating appointment"""
     permission_classes = [IsPatient]
- 
 
-    def get(self, request,pk=None, format=None):
+    def get(self, request, pk=None, format=None):
         user = request.user
         user_patient = patient.objects.filter(user=user).get()
         history = patient_history.objects.filter(patient=user_patient).latest('admit_date')
-        appointment=Appointment.objects.filter(status=True,patient_history=history)
-        historySerializer=appointmentSerializerPatient(appointment, many=True)
+        appointment = Appointment.objects.filter(status=True, patient_history=history)
+        historySerializer = appointmentSerializerPatient(appointment, many=True)
         return Response(historySerializer.data, status=status.HTTP_200_OK)
     
     def post(self, request, format=None):
@@ -149,10 +144,4 @@ class appointmentViewPatient(APIView):
         if serializer.is_valid():
             serializer.save(patient_history=history)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response( serializer.errors
-        , status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
-
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
