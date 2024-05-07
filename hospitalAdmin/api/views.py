@@ -1,5 +1,6 @@
 from django.http import Http404
 from django.shortcuts import get_object_or_404
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -33,7 +34,7 @@ class IsAdmin(BasePermission):
 class CustomAuthToken(ObtainAuthToken):
 
     """This class returns custom Authentication token only for admin"""
-
+    @swagger_auto_schema(operation_summary="Emil lox")
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data,
                                            context={'request': request})
@@ -61,6 +62,7 @@ class docregistrationViewAdmin(APIView):
 
     permission_classes = [IsAdmin]
 
+    @swagger_auto_schema(operation_summary="Emil got")
     def post(self, request, format=None):
         registrationSerializer = doctorRegistrationSerializerAdmin(
             data=request.data.get('user_data'))
@@ -91,12 +93,14 @@ class doctorAccountViewAdmin(APIView):
 
     permission_classes = [IsAdmin]
 
+
     def get_object(self, pk):
         try:
             return User.objects.get(pk=pk)
         except User.DoesNotExist:
             raise Http404
 
+    @swagger_auto_schema(operation_summary="Emil pidor")
     def get(self, request, pk=None, format=None):
 
         if pk:
@@ -107,6 +111,7 @@ class doctorAccountViewAdmin(APIView):
         serializer = doctorAccountSerializerAdmin(all_doctor, many=True)
         return Response({'doctors': serializer.data}, status=status.HTTP_200_OK)
 
+    @swagger_auto_schema(operation_summary="Emil pidor2")
     def put(self, request, pk):
         saved_user = self.get_object(pk)
         serializer = doctorAccountSerializerAdmin(
