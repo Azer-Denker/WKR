@@ -168,7 +168,6 @@ class approveDoctorViewAdmin(APIView):
         return Response({"message": "Doctor approval request with id `{}` has been deleted.".format(pk)}, status=status.HTTP_204_NO_CONTENT)
 
 
-
 class approvePatientViewAdmin(APIView):
     """API endpoint for getting new patient request,
      update and delete approval requests.- only accessible by Admin"""
