@@ -21,7 +21,7 @@ from .yasg import urlpatterns as doc_urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/doctor/', include('doctor.api.urls')),
-    path('api/patient/', include('patient.api.urls')),
+    path('api/Patient/', include('patient.api.urls')),
     path('api/admin/', include('hospitalAdmin.api.urls')),
 ]
 

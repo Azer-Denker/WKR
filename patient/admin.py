@@ -1,37 +1,35 @@
 from django.contrib import admin
-from . models import patient, patient_history, Appointment, patient_cost
+from . models import Patient, PatientHistory, Appointment, PatientCost
 
-# Register your models here.
-
-# admin.site.register(patient)
-# admin.site.register(patient_history)
+# admin.site.register(Patient)
+# admin.site.register(PatientHistory)
 admin.site.register(Appointment)
-admin.site.register(patient_cost)
+admin.site.register(PatientCost)
+
 
 class PatientCost(admin.TabularInline):
-    model=patient_cost
+    model = PatientCost
+
 
 class PatientAppointment(admin.TabularInline):
-    model=Appointment
+    model = Appointment
+
 
 class PatientHistoryAdmin(admin.ModelAdmin):
-    list_display=('patient', 'assigned_doctor','admit_date','department','release_date')
-    inlines=[PatientAppointment, PatientCost]
+    list_display = ('patient', 'assigned_doctor', 'admit_date', 'department', 'release_date')
+    inlines = [PatientAppointment, PatientCost]
 
-admin.site.register(patient_history, PatientHistoryAdmin)
+
+admin.site.register(PatientHistory, PatientHistoryAdmin)
+
 
 class PatientHistoryInline(admin.StackedInline):
-    model=patient_history
-    
+    model = PatientHistory
     
 
 class PatientAdmin(admin.ModelAdmin):
-    list_display=('user','age','address','mobile')
-    inlines=[PatientHistoryInline]
-
-admin.site.register(patient, PatientAdmin)
+    list_display = ('user', 'age', 'address', 'mobile')
+    inlines = [PatientHistoryInline]
 
 
-
-
-
+admin.site.register(Patient, PatientAdmin)

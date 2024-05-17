@@ -1,18 +1,18 @@
-from patient.models import Appointment
 from rest_framework import serializers
 from account.models import User
-from doctor.models import doctor
+from doctor.models import Doctor
+
 from django.contrib.auth.models import Group
 
 
-class doctorRegistrationSerializer(serializers.Serializer):
+class DoctorRegistrationSerializer(serializers.Serializer):
 
     username = serializers.CharField(label='Username:')
     first_name = serializers.CharField(label='First name:')
     last_name = serializers.CharField(label='Last name:', required=False)
-    password = serializers.CharField(label='Password:', style={'input_type': 'password'}, write_only=True, min_length=8,
-    help_text="Your password must contain at least 8 characters and should not be entirely numeric."
-    )
+    password = serializers.CharField(
+        label='Password:', style={'input_type': 'password'}, write_only=True, min_length=8,
+        help_text="Your password must contain at least 8 characters and should not be entirely numeric.")
     password2 = serializers.CharField(label='Confirm password:', style={'input_type': 'password'},  write_only=True)
 
     def validate_username(self, username):
@@ -47,7 +47,7 @@ class doctorRegistrationSerializer(serializers.Serializer):
         return user
 
 
-class doctorProfileSerializer(serializers.Serializer):
+class DoctorProfileSerializer(serializers.Serializer):
     Cardiologist = 'CL'
     Dermatologists = 'DL'
     Emergency_Medicine_Specialists = 'EMC'
@@ -58,22 +58,19 @@ class doctorProfileSerializer(serializers.Serializer):
                                          choices=[(Cardiologist, 'Cardiologist'),
                                                   (Dermatologists, 'Dermatologists'),
                                                   (Emergency_Medicine_Specialists, 'Emergency Medicine Specialists'),
-                                                           (Immunologists, 'Immunologists'),
-                                                                       (Anesthesiologists, 'Anesthesiologists'),
-                                                                       (Colon_and_Rectal_Surgeons,
-                                                                        'Colon and Rectal Surgeons')
-    ])
-    address= serializers.CharField(label="Address:")
-    mobile=serializers.CharField(label="Mobile Number:", max_length=20)
-
+                                                  (Immunologists, 'Immunologists'),
+                                                  (Anesthesiologists, 'Anesthesiologists'),
+                                                  (Colon_and_Rectal_Surgeons, 'Colon and Rectal Surgeons')])
+    address = serializers.CharField(label="Address:")
+    mobile = serializers.CharField(label="Mobile Number:", max_length=20)
 
     def validate_mobile(self, mobile):
-        if mobile.isdigit()==False:
+        if not mobile.isdigit():
             raise serializers.ValidationError('Please Enter a valid mobile number!')
         return mobile
     
     def create(self, validated_data):
-        new_doctor= doctor.objects.create(
+        new_doctor = Doctor.objects.create(
             department=validated_data['department'],
             address=validated_data['address'],
             mobile=validated_data['mobile'],
@@ -82,48 +79,36 @@ class doctorProfileSerializer(serializers.Serializer):
         return new_doctor
     
     def update(self, instance, validated_data):
-        instance.department=validated_data.get('department', instance.department)
-        instance.address=validated_data.get('address', instance.address)
-        instance.mobile=validated_data.get('mobile', instance.mobile)
+        instance.department = validated_data.get('department', instance.department)
+        instance.address = validated_data.get('address', instance.address)
+        instance.mobile = validated_data.get('mobile', instance.mobile)
         instance.save()
         return instance
 
 
-
-class patientHistorySerializerDoctorView(serializers.Serializer):
-    Cardiologist='CL'
-    Dermatologists='DL'
-    Emergency_Medicine_Specialists='EMC'
-    Immunologists='IL'
-    Anesthesiologists='AL'
-    Colon_and_Rectal_Surgeons='CRS'
-    admit_date=serializers.DateField(label="Admit Date:", read_only=True)
-    symptomps=serializers.CharField(label="Symptomps:", style={'base_template': 'textarea.html'})
-    department=serializers.CharField(label='Department: ')
-    #required=False; if this field is not required to be present during deserialization.
-    release_date=serializers.DateField(label="Release Date:", required=False)
-    assigned_doctor=serializers.StringRelatedField(label='Assigned Doctor:')
+class PatientHistorySerializerDoctorView(serializers.Serializer):
+    Cardiologist = 'CL'
+    Dermatologists = 'DL'
+    Emergency_Medicine_Specialists = 'EMC'
+    Immunologists = 'IL'
+    Anesthesiologists = 'AL'
+    Colon_and_Rectal_Surgeons = 'CRS'
+    admit_date = serializers.DateField(label="Admit Date:", read_only=True)
+    symptomps = serializers.CharField(label="Symptomps:", style={'base_template': 'textarea.html'})
+    department = serializers.CharField(label='Department: ')
+    release_date = serializers.DateField(label="Release Date:", required=False)
+    assigned_doctor = serializers.StringRelatedField(label='Assigned Doctor:')
     
 
-
-class doctorAppointmentSerializer(serializers.Serializer):
-    patient_name=serializers.SerializerMethodField('related_patient_name')
-    patient_age=serializers.SerializerMethodField('related_patient_age')
-    appointment_date=serializers.DateField(label="Appointment Date:",)
-    appointment_time=serializers.TimeField(label="Appointment Time:")
-    patient_history=patientHistorySerializerDoctorView(label='patient History:')
-
+class DoctorAppointmentSerializer(serializers.Serializer):
+    patient_name = serializers.SerializerMethodField('related_patient_name')
+    patient_age = serializers.SerializerMethodField('related_patient_age')
+    appointment_date = serializers.DateField(label="Appointment Date:",)
+    appointment_time = serializers.TimeField(label="Appointment Time:")
+    patient_history = PatientHistorySerializerDoctorView(label='Patient History:')
 
     def related_patient_name(self, obj):
-        return obj.patient_history.patient.get_name
+        return obj.patient_history.Patient.get_name
     
     def related_patient_age(self, obj):
-        return obj.patient_history.patient.age
-
-
-
-
-
-
-
-
+        return obj.patient_history.Patient.age

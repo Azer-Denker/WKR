@@ -22,26 +22,26 @@ For authenticating user, Django REST Framework custom token authentication is us
 - api/doctor/appointments/
 
 ### 2. Patient:
-- api/patient/registration/
-- api/patient/login/
-- api/patient/profile/
-- api/patient/history/
-- api/patient/appointment/
+- api/Patient/registration/
+- api/Patient/login/
+- api/Patient/profile/
+- api/Patient/history/
+- api/Patient/appointment/
 
 ### 2. Admin:
 - api/admin/login/
 - api/admin/approve/doctors/
 - api/admin/approve/doctor/:uuid/
 - api/admin/approve/patients/
-- api/admin/patient/:uuid/
+- api/admin/Patient/:uuid/
 - api/admin/doctor/registration/
 - api/admin/doctors/
 - api/admin/doctor/:uuid/
-- api/admin/patient/registration/
+- api/admin/Patient/registration/
 - api/admin/patients/
-- api/admin/patient/:uuid/
-- api/admin/patient/:uuid/history/
-- api/admin/patient/:uuid/history/:id/
+- api/admin/Patient/:uuid/
+- api/admin/Patient/:uuid/history/
+- api/admin/Patient/:uuid/history/:id/
 - api/admin/appointments/
 - api/admin/appointment/:id/
 - api/admin/approve/appointments/
@@ -160,7 +160,7 @@ response:
 ```json
 [
     {
-        "patient_name": "patient one",
+        "patient_name": "Patient one",
         "patient_age": 25.5,
         "appointment_date": "2021-07-07",
         "appointment_time": "09:33:38",
@@ -178,9 +178,9 @@ response:
 ------------
 
 
-**POST api/patient/registration/**
+**POST api/Patient/registration/**
 
-Details: API endpoint for creating new patient account.
+Details: API endpoint for creating new Patient account.
 
 request:
 ```json
@@ -215,9 +215,9 @@ response:
 }
 ```
 
-**POST api/patient/login/**
+**POST api/Patient/login/**
 
-Details: API endpoint for patient login. Account needs be approved by admin first.
+Details: API endpoint for Patient login. Account needs be approved by admin first.
 
 request:
 ```json
@@ -233,9 +233,9 @@ request:
 }
 ```
 
-**GET api/patient/profile/**
+**GET api/Patient/profile/**
 
-Details: API endpoint for getting details of patient profile.Token authentication required.
+Details: API endpoint for getting details of Patient profile.Token authentication required.
 
 response:
 ```json
@@ -252,9 +252,9 @@ response:
     }
 }
 ```
-**PUT api/patient/profile/**
+**PUT api/Patient/profile/**
 
-Details: API endpoint for updating details of a patient profile.Token authentication required.
+Details: API endpoint for updating details of a Patient profile.Token authentication required.
 
 request:
 ```json
@@ -278,9 +278,9 @@ response:
 }
 ```
 
-**GET api/patient/history/**
+**GET api/Patient/history/**
 
-Details: API endpoint for all history of a patient .Token authentication required.
+Details: API endpoint for all history of a Patient .Token authentication required.
 
 response:
 ```json
@@ -302,7 +302,7 @@ response:
     }
 ]
 ```
-**GET api/patient/appointment/**
+**GET api/Patient/appointment/**
 
 Details: API endpoint for getting all latest approved appointments. Token authentication required.
 
@@ -326,7 +326,7 @@ response:
 ]
 ```
 
-**POST api/patient/appointment/**
+**POST api/Patient/appointment/**
 
 Details: API endpoint for creating an appointment request. Token authentication required.
 
@@ -500,7 +500,7 @@ response:
 
 **GET api/admin/approve/patients/**
 
-Details: API endpoint for getting all patient approval request.Token authentication required.
+Details: API endpoint for getting all Patient approval request.Token authentication required.
 
 response:
 ```json
@@ -512,7 +512,7 @@ response:
             "first_name": "Patient new",
             "last_name": "",
             "status": false,
-            "patient": {
+            "Patient": {
                 "age": "45.0",
                 "address": "New iskaton",
                 "mobile": "342423423"
@@ -522,9 +522,9 @@ response:
 }
 ```
 
-**GET api/admin/patient/:uuid/**
+**GET api/admin/Patient/:uuid/**
 
-Details: API endpoint for getting detail of a patient approval request.Token authentication required.
+Details: API endpoint for getting detail of a Patient approval request.Token authentication required.
 
 response:
 ```json
@@ -535,7 +535,7 @@ response:
         "first_name": "Patient new",
         "last_name": "",
         "status": false,
-        "patient": {
+        "Patient": {
             "age": "45.0",
             "address": "New iskaton",
             "mobile": "342423423"
@@ -544,9 +544,9 @@ response:
 }
 ```
 
-**PUT api/admin/patient/:uuid/**
+**PUT api/admin/Patient/:uuid/**
 
-Details: API endpoint for updating detail of a patient approval request.Token authentication required.
+Details: API endpoint for updating detail of a Patient approval request.Token authentication required.
 
 request:
 ```json
@@ -556,7 +556,7 @@ request:
         "username": "patient10",
         "first_name": "Patient new",
         "status": true,
-        "patient": {
+        "Patient": {
             "age": "45.0",
             "address": "New iskaton",
             "mobile": "342423423"
@@ -574,7 +574,7 @@ response:
         "first_name": "Patient new",
         "last_name": "",
         "status": true,
-        "patient": {
+        "Patient": {
             "age": "45.0",
             "address": "New iskaton",
             "mobile": "342423423"
@@ -584,9 +584,9 @@ response:
 ```
 
 
-**DELETE api/admin/patient/:uuid/**
+**DELETE api/admin/Patient/:uuid/**
 
-Details: API endpoint for deleting a patient approval request.Token authentication required.
+Details: API endpoint for deleting a Patient approval request.Token authentication required.
 
 response:
 ```json
@@ -764,9 +764,9 @@ response:
 }
 ```
 
-**POST api/admin/patient/registration/**
+**POST api/admin/Patient/registration/**
 
-Details: API endpoint for creating a  patient's account. Token authentication required.
+Details: API endpoint for creating a  Patient's account. Token authentication required.
 
 request:
 ```json
@@ -805,7 +805,7 @@ response:
 
 **GET api/admin/patients/**
 
-Details: API endpoint for getting all the patients account.  only approved patient will be available.  Token authentication required.
+Details: API endpoint for getting all the patients account.  only approved Patient will be available.  Token authentication required.
 
  response:
  ```json
@@ -814,10 +814,10 @@ Details: API endpoint for getting all the patients account.  only approved patie
         {
             "id": "94d9debf-6c3b-48bb-98f6-1c8f0fbeae04",
             "username": "patient1",
-            "first_name": "patient",
+            "first_name": "Patient",
             "last_name": "one",
             "status": true,
-            "patient": {
+            "Patient": {
                 "age": "25.5",
                 "address": "Rajshahi",
                 "mobile": "9999"
@@ -829,7 +829,7 @@ Details: API endpoint for getting all the patients account.  only approved patie
             "first_name": "patien2",
             "last_name": "two",
             "status": true,
-            "patient": {
+            "Patient": {
                 "age": "29.0",
                 "address": "Dhaka",
                 "mobile": "12312343"
@@ -841,7 +841,7 @@ Details: API endpoint for getting all the patients account.  only approved patie
             "first_name": "patient3",
             "last_name": "three",
             "status": true,
-            "patient": {
+            "Patient": {
                 "age": "45.0",
                 "address": "Rangpur",
                 "mobile": "12312343424"
@@ -853,7 +853,7 @@ Details: API endpoint for getting all the patients account.  only approved patie
             "first_name": "patient10",
             "last_name": "ten",
             "status": true,
-            "patient": {
+            "Patient": {
                 "age": "45.0",
                 "address": "Rangpur",
                 "mobile": "12312343424"
@@ -863,9 +863,9 @@ Details: API endpoint for getting all the patients account.  only approved patie
 }
 ```
 
-**Get api/admin/patient/:uuid/**
+**Get api/admin/Patient/:uuid/**
 
-Details: API endpoint for getting detail of a patient account.Token authentication required.
+Details: API endpoint for getting detail of a Patient account.Token authentication required.
 
 response:
 ```json
@@ -873,10 +873,10 @@ response:
     "patients": {
         "id": "94d9debf-6c3b-48bb-98f6-1c8f0fbeae04",
         "username": "patient1",
-        "first_name": "patient",
+        "first_name": "Patient",
         "last_name": "one",
         "status": true,
-        "patient": {
+        "Patient": {
             "age": "25.5",
             "address": "Rajshahi",
             "mobile": "9999"
@@ -885,9 +885,9 @@ response:
 }
 ```
 
-**PUT api/admin/patient/:uuid/**
+**PUT api/admin/Patient/:uuid/**
 
-Details: API endpoint for updatig detail of a patient account.Token authentication required.
+Details: API endpoint for updatig detail of a Patient account.Token authentication required.
 
 request:
 ```json
@@ -895,10 +895,10 @@ request:
     "patients": {
         "id": "94d9debf-6c3b-48bb-98f6-1c8f0fbeae04",
         "username": "patient1",
-        "first_name": "patient",
+        "first_name": "Patient",
         "last_name": "one",
         "status": true,
-        "patient": {
+        "Patient": {
             "age": "25.5",
             "address": "Rajshahi",
             "mobile": "9999"
@@ -913,10 +913,10 @@ response:
     "patients": {
         "id": "94d9debf-6c3b-48bb-98f6-1c8f0fbeae04",
         "username": "patient1",
-        "first_name": "patient",
+        "first_name": "Patient",
         "last_name": "one",
         "status": true,
-        "patient": {
+        "Patient": {
             "age": "25.5",
             "address": "Dhaka",
             "mobile": "9999"
@@ -924,9 +924,9 @@ response:
     }
 }
 ```
-**DELETE api/admin/patient/:uuid/**
+**DELETE api/admin/Patient/:uuid/**
 
-Details: API endpoint for updating detail of a patient account.Token authentication required.
+Details: API endpoint for updating detail of a Patient account.Token authentication required.
 
 response:
 ```json
@@ -936,9 +936,9 @@ response:
 ```
 
 
-**GET api/admin/patient/:uuid/history/**
+**GET api/admin/Patient/:uuid/history/**
 
-Details: API endpoint for getting all histories for specific patient.Token authentication required.
+Details: API endpoint for getting all histories for specific Patient.Token authentication required.
 
 response:
 ```json
@@ -963,9 +963,9 @@ response:
 }
 ```
 
-**GET api/admin/patient/:uuid/history/:id/**
+**GET api/admin/Patient/:uuid/history/:id/**
 
-Details: API endpoint for getting speicific history for specific patient.Token authentication required.
+Details: API endpoint for getting speicific history for specific Patient.Token authentication required.
 
 response:
 ```json
@@ -987,9 +987,9 @@ response:
     }
 }
 ```
-**PUT api/admin/patient/:uuid/history/:id/**
+**PUT api/admin/Patient/:uuid/history/:id/**
 
-Details: API endpoint for updating history for specific patient.Token authentication required.
+Details: API endpoint for updating history for specific Patient.Token authentication required.
 
 request:
 
@@ -1033,9 +1033,9 @@ response:
 }
 ```
 
-**DELETE api/admin/patient/:uuid/history/:id/**
+**DELETE api/admin/Patient/:uuid/history/:id/**
 
-Delete: API endpoint for deleting a patient history. Token authentication required.
+Delete: API endpoint for deleting a Patient history. Token authentication required.
 
 response:
 
